@@ -29,22 +29,4 @@ public class Authcontroller {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createMember(signUpRequest));
     }
 
-
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.doLogin(loginRequest));
-//
-//    }
-
-//    @PostMapping("/admin/login")
-//    public ResponseEntity<LoginResponse> adminLogin(@RequestBody LoginRequest loginRequest){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.loginAdmin(loginRequest));
-//    }
-//
-//    @PostMapping("/member/login")
-//    public ResponseEntity<LoginResponse> memberLogin(@RequestBody LoginRequest loginRequest){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.loginMember(loginRequest));
-//    }
-
-
 }

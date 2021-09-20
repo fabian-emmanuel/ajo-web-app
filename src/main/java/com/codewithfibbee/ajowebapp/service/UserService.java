@@ -14,5 +14,4 @@ public interface UserService {
 
     SignUpResponse createMember(SignUpRequest user);
 
-//    LoginResponse doLogin(LoginRequest user);
 }
