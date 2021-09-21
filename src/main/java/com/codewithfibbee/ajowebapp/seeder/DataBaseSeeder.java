@@ -1,6 +1,5 @@
 package com.codewithfibbee.ajowebapp.seeder;
 
-import com.codewithfibbee.ajowebapp.configs.Roles;
 import com.codewithfibbee.ajowebapp.exceptions.ResourceNotFoundException;
 import com.codewithfibbee.ajowebapp.model.Role;
 import com.codewithfibbee.ajowebapp.model.User;
@@ -10,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.codewithfibbee.ajowebapp.configs.Roles.*;
 

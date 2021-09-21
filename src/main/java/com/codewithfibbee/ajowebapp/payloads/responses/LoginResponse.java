@@ -1,11 +1,9 @@
 package com.codewithfibbee.ajowebapp.payloads.responses;
 
-import com.codewithfibbee.ajowebapp.model.Role;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @RequiredArgsConstructor

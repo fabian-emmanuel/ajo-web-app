@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(Arrays.toString(new HttpMethod[]{GET, POST, PUT, DELETE}),
                         "/api/**").hasAnyAuthority("SUPER_ADMIN")
                 .antMatchers(POST, "/api/admin/**").hasAnyAuthority("SUB_ADMIN")
-                .antMatchers(POST, "/api/users/**").hasAnyAuthority("MEMBER")
+                .antMatchers(POST, "/api/member/**").hasAnyAuthority("MEMBER")
                 .anyRequest()
                 .authenticated();
         http.addFilter(customAuthenticationFilter)
