@@ -1,5 +1,7 @@
 package com.codewithfibbee.ajowebapp.seeder;
 
+import com.codewithfibbee.ajowebapp.configs.Roles;
+import com.codewithfibbee.ajowebapp.enums.AuthenticationProvider;
 import com.codewithfibbee.ajowebapp.exceptions.ResourceNotFoundException;
 import com.codewithfibbee.ajowebapp.model.Role;
 import com.codewithfibbee.ajowebapp.model.User;
@@ -55,9 +57,10 @@ public class DataBaseSeeder {
         roles.add(role);
         if(users.isEmpty()){
             User user = new User();
-            user.setFirstName("Admin");
-            user.setLastName("Admin");
+            user.setName("Admin Admin");
             user.setEmail("admin@admin.com");
+            user.setEmailVerified(true);
+            user.setProvider(AuthenticationProvider.FACEBOOK);
             user.setEncryptedPassword(new BCryptPasswordEncoder().encode("admin2020"));
             user.setDateCreated(new Date());
             user.setIsDeactivated(false);

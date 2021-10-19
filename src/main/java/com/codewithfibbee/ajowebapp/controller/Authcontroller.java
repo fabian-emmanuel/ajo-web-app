@@ -2,31 +2,64 @@ package com.codewithfibbee.ajowebapp.controller;
 
 import com.codewithfibbee.ajowebapp.payloads.requests.LoginRequest;
 import com.codewithfibbee.ajowebapp.payloads.requests.SignUpRequest;
-import com.codewithfibbee.ajowebapp.payloads.responses.LoginResponse;
-import com.codewithfibbee.ajowebapp.payloads.responses.SignUpResponse;
+import com.codewithfibbee.ajowebapp.payloads.responses.ApiResponse;
+import com.codewithfibbee.ajowebapp.payloads.responses.AuthResponse;
+import com.codewithfibbee.ajowebapp.security.TokenProvider;
 import com.codewithfibbee.ajowebapp.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class Authcontroller {
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/admin/register")
-    public ResponseEntity<SignUpResponse> registerAdmin(@RequestBody SignUpRequest signUpRequest) throws Exception {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createAdmin(signUpRequest));
+    public ResponseEntity<?> registerAdmin(@RequestBody SignUpRequest signUpRequest) throws Exception {
+        var result = userService.createAdmin(signUpRequest);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/user/me")
+                .buildAndExpand(result.getId()).toUri();
+        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully@"));
     }
 
     @PostMapping("/member/register")
-    public ResponseEntity<SignUpResponse> registerMember(@RequestBody SignUpRequest signUpRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createMember(signUpRequest));
+    public ResponseEntity<?> registerMember(@RequestBody SignUpRequest signUpRequest){
+        var result = userService.createMember(signUpRequest);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/user/me")
+                .buildAndExpand(result.getId()).toUri();
+        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully@"));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = tokenProvider.createToken(authentication);
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
+
 
 }

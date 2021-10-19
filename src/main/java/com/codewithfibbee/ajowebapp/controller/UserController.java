@@ -1,12 +1,12 @@
 package com.codewithfibbee.ajowebapp.controller;
 
 import com.codewithfibbee.ajowebapp.service.UserService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
