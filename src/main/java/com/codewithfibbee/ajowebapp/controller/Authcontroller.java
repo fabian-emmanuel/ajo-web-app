@@ -6,6 +6,7 @@ import com.codewithfibbee.ajowebapp.payloads.responses.ApiResponse;
 import com.codewithfibbee.ajowebapp.payloads.responses.AuthResponse;
 import com.codewithfibbee.ajowebapp.security.TokenProvider;
 import com.codewithfibbee.ajowebapp.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,12 +23,10 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/auth")
 public class Authcontroller {
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final TokenProvider tokenProvider;
+    private UserService userService;
 
     @PostMapping("/admin/register")
     public ResponseEntity<?> registerAdmin(@RequestBody SignUpRequest signUpRequest) throws Exception {
@@ -49,17 +48,7 @@ public class Authcontroller {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = tokenProvider.createToken(authentication);
-        System.out.println(token);
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(userService.authenticateUser(loginRequest));
     }
 
 

@@ -6,13 +6,21 @@ import com.codewithfibbee.ajowebapp.exceptions.ResourceNotFoundException;
 import com.codewithfibbee.ajowebapp.exceptions.UserAlreadyExistException;
 import com.codewithfibbee.ajowebapp.model.Role;
 import com.codewithfibbee.ajowebapp.model.User;
+import com.codewithfibbee.ajowebapp.payloads.requests.LoginRequest;
 import com.codewithfibbee.ajowebapp.payloads.requests.SignUpRequest;
+import com.codewithfibbee.ajowebapp.payloads.responses.AuthResponse;
 import com.codewithfibbee.ajowebapp.repository.RoleRepo;
 import com.codewithfibbee.ajowebapp.repository.UserRepo;
+import com.codewithfibbee.ajowebapp.security.TokenProvider;
 import com.codewithfibbee.ajowebapp.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +32,16 @@ import java.util.Set;
 import static com.codewithfibbee.ajowebapp.enums.Roles.SUB_ADMIN;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepo userRepo;
-    private final RoleRepo roleRepo;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private UserRepo userRepo;
+    private RoleRepo roleRepo;
+    private BCryptPasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private TokenProvider tokenProvider;
 
 
     @Override
@@ -58,6 +68,20 @@ public class UserServiceImpl implements UserService {
         return userRepo.findById(id).orElseThrow(()->
                 new ResourceNotFoundException("User", "id", id)
                 );
+    }
+
+    @Override
+    public Object authenticateUser(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = tokenProvider.createToken(authentication);
+        System.out.println(token);
+        return new AuthResponse(token);
     }
 
 
