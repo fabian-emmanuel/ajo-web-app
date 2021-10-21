@@ -1,4 +1,4 @@
-package com.codewithfibbee.ajowebapp.configs;
+package com.codewithfibbee.ajowebapp.enums;
 
 public enum Roles {
     SUPER_ADMIN,

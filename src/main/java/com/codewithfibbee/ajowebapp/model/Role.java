@@ -1,6 +1,6 @@
 package com.codewithfibbee.ajowebapp.model;
 
-import com.codewithfibbee.ajowebapp.configs.Roles;
+import com.codewithfibbee.ajowebapp.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

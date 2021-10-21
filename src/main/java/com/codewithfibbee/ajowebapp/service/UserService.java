@@ -9,4 +9,5 @@ public interface UserService {
 
     User createMember(SignUpRequest user);
 
+    User getUserById(Long id);
 }

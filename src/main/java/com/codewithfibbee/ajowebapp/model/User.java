@@ -46,9 +46,6 @@ public class User implements Serializable {
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
-    private String encryptedPassword;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthenticationProvider provider;

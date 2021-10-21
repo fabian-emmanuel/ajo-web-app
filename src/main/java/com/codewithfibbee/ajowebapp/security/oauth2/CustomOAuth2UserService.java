@@ -7,6 +7,7 @@ import com.codewithfibbee.ajowebapp.repository.UserRepo;
 import com.codewithfibbee.ajowebapp.security.UserPrincipal;
 import com.codewithfibbee.ajowebapp.security.oauth2.user.OAuth2UserInfo;
 import com.codewithfibbee.ajowebapp.security.oauth2.user.OAuth2UserInfoFactory;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -20,10 +21,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserRepo userRepository;
+    private UserRepo userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {

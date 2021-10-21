@@ -1,6 +1,6 @@
 package com.codewithfibbee.ajowebapp.security;
 
-import com.codewithfibbee.ajowebapp.configs.Roles;
+import com.codewithfibbee.ajowebapp.enums.Roles;
 import com.codewithfibbee.ajowebapp.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

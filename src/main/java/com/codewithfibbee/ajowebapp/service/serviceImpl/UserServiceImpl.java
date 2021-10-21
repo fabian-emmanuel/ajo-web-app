@@ -1,6 +1,6 @@
 package com.codewithfibbee.ajowebapp.service.serviceImpl;
 
-import com.codewithfibbee.ajowebapp.configs.Roles;
+import com.codewithfibbee.ajowebapp.enums.Roles;
 import com.codewithfibbee.ajowebapp.enums.AuthenticationProvider;
 import com.codewithfibbee.ajowebapp.exceptions.ResourceNotFoundException;
 import com.codewithfibbee.ajowebapp.exceptions.UserAlreadyExistException;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.codewithfibbee.ajowebapp.configs.Roles.SUB_ADMIN;
+import static com.codewithfibbee.ajowebapp.enums.Roles.SUB_ADMIN;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +53,13 @@ public class UserServiceImpl implements UserService {
         return createUser(userDetails, roles);
     }
 
+    @Override
+    public User getUserById(Long id) {
+        return userRepo.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("User", "id", id)
+                );
+    }
+
 
     private User createUser(SignUpRequest userDetails, Set<Role> roles){
         var userExists = userRepo.findByEmail(userDetails.getEmail());
@@ -62,7 +69,7 @@ public class UserServiceImpl implements UserService {
             user.setName(userDetails.getName());
             user.setEmail(userDetails.getEmail());
             user.setProvider(AuthenticationProvider.LOCAL);
-            user.setEncryptedPassword(passwordEncoder.encode(userDetails.getPassword()));
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
             user.setRoles(roles);
             user.setDateCreated(new Date());
             user.setIsDeactivated(false);

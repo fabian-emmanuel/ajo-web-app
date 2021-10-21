@@ -1,6 +1,5 @@
 package com.codewithfibbee.ajowebapp.seeder;
 
-import com.codewithfibbee.ajowebapp.configs.Roles;
 import com.codewithfibbee.ajowebapp.enums.AuthenticationProvider;
 import com.codewithfibbee.ajowebapp.exceptions.ResourceNotFoundException;
 import com.codewithfibbee.ajowebapp.model.Role;
@@ -19,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.codewithfibbee.ajowebapp.configs.Roles.*;
+import static com.codewithfibbee.ajowebapp.enums.Roles.*;
 
 @Component
 @Slf4j
@@ -60,8 +59,8 @@ public class DataBaseSeeder {
             user.setName("Admin Admin");
             user.setEmail("admin@admin.com");
             user.setEmailVerified(true);
-            user.setProvider(AuthenticationProvider.FACEBOOK);
-            user.setEncryptedPassword(new BCryptPasswordEncoder().encode("admin2020"));
+            user.setProvider(AuthenticationProvider.LOCAL);
+            user.setPassword(new BCryptPasswordEncoder().encode("admin2020"));
             user.setDateCreated(new Date());
             user.setIsDeactivated(false);
             user.setIsDeleted(false);
